@@ -7,12 +7,6 @@ In particular, the way TensorFlow 2.x handles symbolic tensors has changed.
 More details about SE-Unet can be found under:
 https://github.com/hujie-frank/SENet/blob/master/README.md
 
-  @inproceedings{hu2018senet,
-    title={Squeeze-and-Excitation Networks},
-    author={Jie Hu and Li Shen and Gang Sun},
-    journal={IEEE Conference on Computer Vision and Pattern Recognition},
-    year={2018}
-  }
 
 This UNet will take an input image of size 512x512x(3/1) and create an output mask of dimension 1.
 So the output will be a mask of binary values.
