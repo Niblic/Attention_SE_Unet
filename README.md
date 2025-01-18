@@ -1,7 +1,7 @@
 # Attention_SE_Unet
 Attention SE UNet for Tensorflow v2.16 
 
-TensorFlow 2.x has made some changes that can lead to this error. 
+TensorFlow 2.x has made some changes that can lead to errors when trying to execute older networks against it. 
 In particular, the way TensorFlow 2.x handles symbolic tensors has changed.
 
 More details about SE-Unet can be found under:
