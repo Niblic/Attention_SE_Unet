@@ -4,6 +4,19 @@ Attention SE UNet for Tensorflow v2.16
 TensorFlow 2.x has made some changes that can lead to this error. 
 In particular, the way TensorFlow 2.x handles symbolic tensors has changed.
 
+More details about SE-Unet can be found under:
+https://github.com/hujie-frank/SENet/blob/master/README.md
+
+  @inproceedings{hu2018senet,
+    title={Squeeze-and-Excitation Networks},
+    author={Jie Hu and Li Shen and Gang Sun},
+    journal={IEEE Conference on Computer Vision and Pattern Recognition},
+    year={2018}
+  }
+
+This UNet will take an input image of size 512x512x(3/1) and create an output mask of dimension 1.
+So the output will be a mask of binary values.
+
 ## SE-U-Net Architektur:
 
 <table>
@@ -107,28 +120,32 @@ We have Dice and Jacard. Below a sample with Adam and Dice loss function
 We can start the training with model.fit() using a callback to write some login and save the models.
 If need will be this can be removed to save disk space.
 
-def train_model(model, input, output, current_epoch):
-    callbacks = [
-        #keras.callbacks.EarlyStopping(monitor="loss", patience=4),
-        keras.callbacks.TensorBoard(
-            log_dir=log_directory,
-            update_freq="epoch",
-            write_graph=True,
-            write_images=True,
-            write_steps_per_second=True
-        ),
-        keras.callbacks.ModelCheckpoint(
-            filepath=model_directory + "/checkpoint-{epoch}",
-            save_freq="epoch",
-        ),
-        keras.callbacks.ProgbarLogger(),
-    ]
-    # Train the model with input and output data
-    # with 128x128 we can manage a batch of 100 and more
-    # with 512x512 we get it working with 25 maybe more M4 needs 13 Sec
-    #model.fit(input, output, initial_epoch=current_epoch, batch_size=len(input), epochs=1500, callbacks=callbacks)
-    model.fit(input, output, initial_epoch=current_epoch, batch_size=25, epochs=1500, callbacks=callbacks)
+    # Training Model code sample
+    def train_model(model, input, output, current_epoch):
+        callbacks = [
+            #keras.callbacks.EarlyStopping(monitor="loss", patience=4),
+            keras.callbacks.TensorBoard(
+                log_dir=log_directory,
+                update_freq="epoch",
+                write_graph=True,
+                write_images=True,
+                write_steps_per_second=True
+            ),
+            keras.callbacks.ModelCheckpoint(
+                filepath=model_directory + "/checkpoint-{epoch}",
+                save_freq="epoch",
+            ),
+            keras.callbacks.ProgbarLogger(),
+        ]
+        # Train the model with input and output data
+        # with 128x128 we can manage a batch of 100 and more
+        # with 512x512 we get it working with 25 maybe more M4 needs 13 Sec
+        #model.fit(input, output, initial_epoch=current_epoch, batch_size=len(input), epochs=1500, callbacks=callbacks)
+        model.fit(input, output, initial_epoch=current_epoch, batch_size=25, epochs=1500, callbacks=callbacks)
+
+To install GPU support for M4 processors follow this instructions:
+
+    https://medium.com/bluetuple-ai/how-to-enable-gpu-support-for-tensorflow-or-pytorch-on-macos-4aaaad057e74
 
 
-    
     
