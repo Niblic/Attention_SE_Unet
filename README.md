@@ -141,5 +141,67 @@ To install GPU support for M4 processors follow this instructions:
 
     https://medium.com/bluetuple-ai/how-to-enable-gpu-support-for-tensorflow-or-pytorch-on-macos-4aaaad057e74
 
+## Creating Training Data
+
+To train the model effectively, we need a set of images accompanied by their corresponding masks. Each mask represents the target outcome for its associated image.
+# Requirements for Training Data
+
+  Images and Masks: Each image must have a matching binary mask (for binary segmentation tasks).
+
+  Naming Convention: To ensure the correct association between images and masks, we use a consistent naming convention. The mask file is named using the corresponding image name with _MASK appended before the file extension (e.g., image.tiff → image_MASK.tiff).
+
+  Directory Structure: Store both the image and its mask in the same directory. This allows us to programmatically pair the images and masks based on their names.
+
+## How It Works
+
+The code processes the directory to:
+
+  Identify and load images and masks based on the naming convention.
+  
+  Resize or normalize images and masks as needed (e.g., to ensure consistent dimensions).
+
+  Create two arrays:
+  
+    Input Array: Contains the images.
+      
+    Output Array: Contains the corresponding masks, aligned with the images.
+
+## Code
+
+We provide two key functions to facilitate the creation of training data:
+
+  load_image_data:
+      Loads and preprocesses individual images or masks (e.g., resizing, normalization).
+
+  load_training_data:
+      Scans the specified directory.
+      Matches images with masks using the naming convention.
+      Creates and returns the input and output arrays for training.
+
+These functions ensure that the training data is prepared efficiently and accurately for use in the network.
+
+    def load_image_data(path, mask=False, target_size=(512, 512)):
+        # Select Color schema
+        color_mode = "grayscale" if mask else "rgb"
+        # Transform image into required target_size
+        image = keras.utils.load_img(path, color_mode=color_mode, target_size=target_size)
+        # Change the image into an array required for the network to work
+        image_data = keras.utils.img_to_array(image)
+        # NCHW -> NHWC might need the channel last.. that is required for the network to work
+        image_data = np.moveaxis(image_data, 0, -1) if image_data.shape[0] < image_data.shape[-1] else image_data
+        # Normalize the mask to 0 and 1
+        return tf.round(image_data / 255.0) if mask else image_data / 255.0
+    
+    def load_training_data(target_size=(512, 512)):
+        inputs = []
+        outputs = []
+        for entry in os.scandir(data_directory):
+            if entry.is_file and entry.name.endswith("_MASK.tiff"):
+                # Mask  will be added
+                outputs.append(load_image_data(entry.path, mask=True, target_size=target_size))
+                # Input will be added
+                inputs.append(load_image_data(entry.path.replace("_MASK.tiff", ".tiff"), target_size=target_size))
+        # Sicherstellen, dass die Daten NHWC sind und als Float32 gespeichert werden
+        return np.array(inputs, dtype=np.float32), np.array(outputs, dtype=np.float32)
 
     
