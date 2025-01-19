@@ -1,15 +1,16 @@
 # Attention_SE_Unet
 Attention SE UNet for Tensorflow v2.16 
+## Overview
 
-TensorFlow 2.x has made some changes that can lead to errors when trying to execute older networks against it. 
-In particular, the way TensorFlow 2.x handles symbolic tensors has changed.
+Attention SE U-Net is a deep learning architecture designed for image segmentation tasks. By integrating Squeeze-and-Excitation (SE) blocks and Attention mechanisms, the network enhances feature recalibration and focuses on important regions in the input images. This implementation is built using TensorFlow 2.16.
 
-More details about SE-Unet can be found under:
-https://github.com/hujie-frank/SENet/blob/master/README.md
+The primary goal of this project is to provide a high-performance model for segmentation tasks, such as medical imaging or object delineation, while maintaining flexibility for custom datasets.
+## Features
 
-
-This UNet will take an input image of size 512x512x(3/1) and create an output mask of dimension 1.
-So the output will be a mask of binary values.
+    Attention Mechanism: Focuses on relevant image regions, improving segmentation accuracy.
+    Squeeze-and-Excitation (SE) Blocks: Dynamically adjusts channel-wise feature importance.
+    Fully Convolutional Architecture: Suitable for input images of varying sizes.
+    Binary Segmentation Support: Designed for binary mask generation.
 
 ## SE-U-Net Architektur:
 
@@ -100,9 +101,36 @@ So the output will be a mask of binary values.
   </tbody>
 </table>
 
+## Installation
 
-To compile the model we can use different optimsers and loss functions.
-We have Dice and Jacard. Below a sample with Adam and Dice loss function
+Clone the Repository:
+
+    git clone https://github.com/Niblic/Attention_SE_Unet.git
+    cd Attention_SE_Unet
+
+Install Dependencies: Ensure you have Python 3.8+ installed. Install the required Python packages using pip:
+
+    pip install tensorflow numpy matplotlib pillow
+
+If you use a GPU for training, install the GPU-enabled version of TensorFlow:
+
+    pip install tensorflow-metal  # For macOS with Metal API
+    pip install tensorflow-gpu    # For other platforms with NVIDIA GPUs
+
+## Creating Training Data
+
+To train the model, provide images with corresponding masks:
+
+    Images: The input images for segmentation.
+    Masks: Binary masks indicating the segmentation region.
+    Naming Convention: For each image named image.tiff, provide a mask named image_MASK.tiff.
+
+## Example Code:
+
+load_image_data and load_training_data functions handle image resizing, normalization, and pairing:
+  Organize your training data in a directory. For each image (image.tiff), provide a corresponding mask (image_MASK.tiff). Ensure they are stored in the same folder.
+  To compile the model we can use different optimsers and loss functions.
+  We have Dice and Jacard. Below a sample with Adam and Dice loss function
 
     # Compile the model with optimizer, loss, and metrics
     optimizer = tf.keras.optimizers.legacy.Adam()
@@ -141,36 +169,7 @@ To install GPU support for M4 processors follow this instructions:
 
     https://medium.com/bluetuple-ai/how-to-enable-gpu-support-for-tensorflow-or-pytorch-on-macos-4aaaad057e74
 
-## Creating Training Data
 
-To train the model effectively, we need a set of images accompanied by their corresponding masks. Each mask represents the target outcome for its associated image.
-# Requirements for Training Data
-
-  Images and Masks: Each image must have a matching binary mask (for binary segmentation tasks).
-
-  Naming Convention: To ensure the correct association between images and masks, we use a consistent naming convention. The mask file is named using the corresponding image name with _MASK appended before the file extension (e.g., image.tiff → image_MASK.tiff).
-
-  Directory Structure: Store both the image and its mask in the same directory. This allows us to programmatically pair the images and masks based on their names.
-
-## How It Works
-
-The code processes the directory to:
-
-  Identify and load images and masks based on the naming convention.
-  
-  Resize or normalize images and masks as needed (e.g., to ensure consistent dimensions).
-
-  Create two arrays:
-  
-    Input Array: Contains the images.
-      
-    Output Array: Contains the corresponding masks, aligned with the images.
-
-## Code
-
-We provide two key functions to facilitate the creation of training data:
-
-  load_image_data:
       Loads and preprocesses individual images or masks (e.g., resizing, normalization).
 
   load_training_data:
@@ -204,4 +203,17 @@ These functions ensure that the training data is prepared efficiently and accura
         # Sicherstellen, dass die Daten NHWC sind und als Float32 gespeichert werden
         return np.array(inputs, dtype=np.float32), np.array(outputs, dtype=np.float32)
 
-    
+## Results
+
+During training, the model outputs loss metrics and Dice coefficient values. Sample results are saved in the results directory.
+
+    Input Image:
+
+    Ground Truth Mask:
+
+    Model Prediction:
+
+## References
+
+    Original U-Net Paper: U-Net: Convolutional Networks for Biomedical Image Segmentation
+    SE-Net Paper: Squeeze-and-Excitation Networks    
