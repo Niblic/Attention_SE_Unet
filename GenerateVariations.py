@@ -52,8 +52,8 @@ def save_variations(images, masks, output_dir):
         cv2.imwrite(os.path.join(output_dir, f"image_1variation_{i}_MASK.jpg"), msk)
 
 # Load Images
-original_image = cv2.imread("/Users/dhil/Downloads/Gus-staining-python/pypotrace-master/tensorflow-test/Archive1/Skin/512##[0, 0, 238, 360, 255, 255]##1000110.jpg")  # Originalbild in Farbe (RGB)
-original_mask  = cv2.imread("/Users/dhil/Downloads/Gus-staining-python/pypotrace-master/tensorflow-test/Archive1/Skin/512##[0, 0, 238, 360, 255, 255]##1000110_MASK.jpg", cv2.IMREAD_GRAYSCALE)  # Maske als Graustufenbild
+original_image = cv2.imread("image.jpg")  # Originalbild in Farbe (RGB)
+original_mask  = cv2.imread("image_MASK.jpg", cv2.IMREAD_GRAYSCALE)  # Maske als Graustufenbild
 
 # check if images are correct 
 if original_image is None or original_mask is None:
