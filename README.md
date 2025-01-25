@@ -1,6 +1,6 @@
 # Attention_SE_Unet
 Attention SE UNet for Tensorflow v2.16
-Topics/Tags: `Unet`, `TensorFlow`, `Image Segmentation`, `Deep Learning`, `TensorFlow 2.16`
+- Topics/Tags: `Unet`, `TensorFlow`, `Image Segmentation`, `Deep Learning`, `TensorFlow 2.16`
 
 ## Overview
 
