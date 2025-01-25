@@ -1,5 +1,7 @@
 # Attention_SE_Unet
-Attention SE UNet for Tensorflow v2.16 
+Attention SE UNet for Tensorflow v2.16
+Topics/Tags: `Unet`, `TensorFlow`, `Image Segmentation`, `Deep Learning`, `TensorFlow 2.16`
+
 ## Overview
 
 Attention SE U-Net is a deep learning architecture designed for image segmentation tasks. By integrating Squeeze-and-Excitation (SE) blocks and Attention mechanisms, the network enhances feature recalibration and focuses on important regions in the input images. This implementation is built using TensorFlow 2.16.
