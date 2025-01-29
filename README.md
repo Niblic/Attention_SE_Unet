@@ -202,7 +202,7 @@ These functions ensure that the training data is prepared efficiently and accura
                 outputs.append(load_image_data(entry.path, mask=True, target_size=target_size))
                 # Input will be added
                 inputs.append(load_image_data(entry.path.replace("_MASK.tiff", ".tiff"), target_size=target_size))
-        # Sicherstellen, dass die Daten NHWC sind und als Float32 gespeichert werden
+        # Make sure we save with NCHW and in float32 
         return np.array(inputs, dtype=np.float32), np.array(outputs, dtype=np.float32)
 
 ## Results
